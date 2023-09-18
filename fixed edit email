@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .container {
+        margin-top: 40px;
+      }
+      button {
+        width: 80px;
+        height: 35px;
+        border-radius: 10px;
+      }
+      .container {
+        display: flex;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <form id="formData">
+        <label for="name">Name</label>
+        <input
+          class="form-control"
+          type="text"
+          name="name"
+          id="name"
+          placeholder="Full Name"
+          required
+        />
+        <label for="email">Email</label>
+        <input
+          class="form-control"
+          type="text"
+          id="email"
+          name="email"
+          required
+        />
+        <label for="phone">Phone</label>
+        <input
+          id="phone"
+          required
+          name="phone"
+          class="form-control"
+          type="number"
+          placeholder="Phone Number"
+        />
+        <input
+          style="margin-top: 22px"
+          class="form-control"
+          type="submit"
+          value="submit"
+        />
+      </form>
+    </div>
+    <ul id="items"></ul>
+    <script>
+      let form = document.getElementById("formData");
+      var itemList = document.getElementById("items");
+      form.addEventListener("submit", addItem);
+
+      function addItem(e) {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const formObject = {};
+        formData.forEach(function (value, key) {
+          formObject[key] = value;
+        });
+        var name = document.getElementById("name").value;
+        var email = document.getElementById("email").value;
+        let phone = document.getElementById("phone").value;
+        let deleteBtn = document.createElement("button");
+        let editBtn = document.createElement("button");
+
+        deleteBtn.className = "button";
+        editBtn.className = "ebutton";
+        deleteBtn.appendChild(document.createTextNode("Delete"));
+        editBtn.appendChild(document.createTextNode("Edit"));
+
+        const formVal = {
+          name: name,
+          email: email,
+          phone: phone,
+        };
+
+        localStorage.setItem("user", JSON.stringify(formVal));
+
+        var li = document.createElement("li");
+        var nameText = document.createTextNode(name);
+        var emailText = document.createTextNode("- " + email);
+        var phoneText = document.createTextNode("- " + phone);
+
+        li.className = "list-group-item";
+        li.textContent = `${name} - ${email} - ${phone}`;
+        li.appendChild(deleteBtn);
+        li.appendChild(editBtn);
+
+        document.getElementById("items").appendChild(li);
+        document.getElementById("formData").reset();
+      }
+
+      // Listen for click events on elements with the "button" class
+      itemList.addEventListener("click", function (e) {
+        if (e.target.classList.contains("button")) {
+          if (confirm("Are You Sure?")) {
+            var li = e.target.parentElement;
+            itemList.removeChild(li);
+            localStorage.removeItem("user");
+          }
+        }
+      });
+
+      // Listen for click events on elements with the "ebutton" class
+      itemList.addEventListener("click", function (e) {
+        if (e.target.classList.contains("ebutton")) {
+          // Change this to "ebutton"
+          const li = e.target.parentElement;
+          const text = li.textContent.trim().split(" - ");
+          const [name, email, phone] = text;
+          document.getElementById("name").value = name;
+          document.getElementById("email").value = email;
+        }
+      });
+    </script>
+  </body>
+</html>

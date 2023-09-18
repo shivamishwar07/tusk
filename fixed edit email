@@ -115,12 +115,14 @@
       // Listen for click events on elements with the "ebutton" class
       itemList.addEventListener("click", function (e) {
         if (e.target.classList.contains("ebutton")) {
-          // Change this to "ebutton"
-          const li = e.target.parentElement;
+          var li = e.target.parentElement;
+          itemList.removeChild(li);
+          localStorage.removeItem("user");
           const text = li.textContent.trim().split(" - ");
           const [name, email, phone] = text;
           document.getElementById("name").value = name;
           document.getElementById("email").value = email;
+          document.getElementById("phone").value = text.phone;
         }
       });
     </script>

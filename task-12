@@ -57,43 +57,48 @@
     </div>
     <ul id="items"></ul>
     <script>
+      let form = document.getElementById("formData");
+      var itemList = document.getElementById("items");
+      form.addEventListener("submit", addItem);
 
-let form = document.getElementById('formData');
-var itemList = document.getElementById('items');
-form.addEventListener("submit", addItem);
+      function addItem(e) {
+        e.preventDefault();
 
-function addItem(e) {
-    e.preventDefault();
+        // Use FormData to access form values
+        const formData = new FormData(e.target);
 
-    // Use FormData to access form values
-    const formData = new FormData(e.target);
+        // Convert the FormData object to a JavaScript object
+        const formObject = {};
+        formData.forEach(function (value, key) {
+          formObject[key] = value;
+        });
 
-    // Convert the FormData object to a JavaScript object
-    const formObject = {};
-    formData.forEach(function (value, key) {
-        formObject[key] = value;
-    });
+        var name = document.getElementById("name").value;
+        var email = document.getElementById("email").value;
+        var phone = document.getElementById("phone").value;
 
-    var name = document.getElementById('name').value;
-    var email = document.getElementById('email').value;
-    var phone = document.getElementById('phone').value;
+        const formVal = {
+          name: name,
+          email: email,
+          phone: phone,
+        };
 
-    // Create new li element
-    var li = document.createElement('li');
+        // Store the form data in localStorage as a JSON string
+        localStorage.setItem("user", JSON.stringify(formVal));
+        // Create new li element
+        var li = document.createElement("li");
 
+        var nameText = document.createTextNode(name);
+        var emailText = document.createTextNode("- " + email);
+        var phoneText = document.createTextNode("- " + phone);
 
-    var nameText = document.createTextNode(name);
-    var emailText = document.createTextNode('- ' + email);
-    var phoneText = document.createTextNode('- ' + phone);
-
-
-    // Add class
-    li.className = 'list-group-item';
-    // Add text node with input value
-    li.textContent = `${name} - ${email} - ${phone}`;
-    document.getElementById('items').appendChild(li);
-    document.getElementById('formData').reset();
-}
+        // Add class
+        li.className = "list-group-item";
+        // Add text node with input value
+        li.textContent = `${name} - ${email} - ${phone}`;
+        document.getElementById("items").appendChild(li);
+        document.getElementById("formData").reset();
+      }
     </script>
   </body>
 </html>

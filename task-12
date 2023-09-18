@@ -1,0 +1,99 @@
+<style>
+  .container {
+    margin-top: 40px;
+  }
+  button {
+    width: 80px;
+    height: 35px;
+    border-radius: 10px;
+  }
+  .container {
+    display: flex;
+  }
+</style>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container">
+      <form id="formData">
+        <label for="name">Name</label>
+        <input
+          class="form-control"
+          type="text"
+          name="name"
+          id="name"
+          placeholder="Full Name"
+          required
+        />
+        <label for="email">Email</label>
+        <input
+          class="form-control"
+          type="email"
+          id="email"
+          name="email"
+          required
+        />
+        <label for="phone">Phone</label>
+        <input
+          id="phone"
+          required
+          name="phone"
+          class="form-control"
+          type="number"
+          placeholder="Phone Number"
+        />
+        <input
+          style="margin-top: 22px"
+          class="form-control"
+          type="submit"
+          value="submit"
+        />
+      </form>
+    </div>
+    <ul id="items"></ul>
+    <script>
+
+let form = document.getElementById('formData');
+var itemList = document.getElementById('items');
+form.addEventListener("submit", addItem);
+
+function addItem(e) {
+    e.preventDefault();
+
+    // Use FormData to access form values
+    const formData = new FormData(e.target);
+
+    // Convert the FormData object to a JavaScript object
+    const formObject = {};
+    formData.forEach(function (value, key) {
+        formObject[key] = value;
+    });
+
+    var name = document.getElementById('name').value;
+    var email = document.getElementById('email').value;
+    var phone = document.getElementById('phone').value;
+
+    // Create new li element
+    var li = document.createElement('li');
+
+
+    var nameText = document.createTextNode(name);
+    var emailText = document.createTextNode('- ' + email);
+    var phoneText = document.createTextNode('- ' + phone);
+
+
+    // Add class
+    li.className = 'list-group-item';
+    // Add text node with input value
+    li.textContent = `${name} - ${email} - ${phone}`;
+    document.getElementById('items').appendChild(li);
+    document.getElementById('formData').reset();
+}
+    </script>
+  </body>
+</html>
